@@ -6,8 +6,10 @@
     password: "{{ vcenter_pass }}"
     validate_certs: no
 
-    datacenter: DC1
-    cluster: Cluster1
+    datacenter: 'LAB Datacenter'
+    cluster: 'LAB Cluster'
+
+    folder: "{{ hostname }}"   # ✅ ADD THIS LINE
 
     name: "{{ hostname }}"
     template: win-template

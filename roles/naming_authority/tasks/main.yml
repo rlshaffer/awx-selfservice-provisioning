@@ -3,7 +3,6 @@
   set_fact:
     env_value: "{{ ((environ | first) if environ is iterable and environ is not string else environ) | trim }}"
 
-
 - name: Debug environment
   debug:
     msg: "Raw={{ environ }} | Normalized={{ env_value }}"
