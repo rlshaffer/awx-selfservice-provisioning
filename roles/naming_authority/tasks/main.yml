@@ -1,11 +1,12 @@
 ---
-- name: Normalize environ (handle list or string)
+---
+- name: Normalize environ (handle list + trim spaces)
   set_fact:
     env_value: >-
       {% if environ is iterable and environ is not string %}
-      {{ environ[0] }}
+      {{ environ[0] | trim }}
       {% else %}
-      {{ environ }}
+      {{ environ | trim }}
       {% endif %}
 
 - name: Debug environment
