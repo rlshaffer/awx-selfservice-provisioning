@@ -1,5 +1,4 @@
 ---
----
 - name: Normalize environ (handle list + trim spaces)
   set_fact:
     env_value: >-
