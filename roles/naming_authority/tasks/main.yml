@@ -3,15 +3,15 @@
   debug:
     var: vars
 
-- name: FAIL FAST if environment is missing
+- name: FAIL FAST if enviro is missing
   fail:
-    msg: "environment variable is NOT being passed from AWX"
-  when: environment is not defined
+    msg: "enviro variable is NOT being passed from AWX"
+  when: enviro is not defined
 
-- name: Show environment value
+- name: Show enviro value
   debug:
-    var: environment
+    var: environ
 
-- name: Set environment code
+- name: Set environ code
   set_fact:
-    env_code: "{{ env_map[environment] }}"
+    env_code: "{{ env_map[enviro] }}"
