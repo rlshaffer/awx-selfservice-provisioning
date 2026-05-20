@@ -1,17 +1,12 @@
----
-- name: Show all variables
-  debug:
-    var: vars
 
-- name: FAIL FAST if enviro is missing
-  fail:
-    msg: "enviro variable is NOT being passed from AWX"
-  when: enviro is not defined
-
-- name: Show enviro value
-  debug:
-    var: environ
-
-- name: Set environ code
+- name: Set environment code
   set_fact:
-    env_code: "{{ env_map[enviro] }}"
+    env_code: "{{ env_map[environment] }}"
+
+- name: Set simple hostname (TEMP FIX)
+  set_fact:
+    hostname: "TEST-{{ env_code }}-01"
+
+- name: Debug hostname
+  debug:
+    var: hostname
