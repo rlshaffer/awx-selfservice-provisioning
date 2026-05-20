@@ -1,10 +1,17 @@
 ---
+- name: Show all variables
+  debug:
+    var: vars
+
+- name: FAIL FAST if environment is missing
+  fail:
+    msg: "environment variable is NOT being passed from AWX"
+  when: environment is not defined
+
+- name: Show environment value
+  debug:
+    var: environment
+
 - name: Set environment code
   set_fact:
     env_code: "{{ env_map[environment] }}"
-
-- name: Get site from AD
-  include_tasks: get_site.yml
-
-- name: Generate hostname
-  include_tasks: generate_hostname.yml
