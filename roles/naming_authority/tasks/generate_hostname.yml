@@ -46,6 +46,10 @@
         current_num: "{{ current_num + 1 }}"
       when: exists_in_ad
 
+- name: Set final hostname
+  set_fact:
+    hostname: "{{ candidate_hostname }}"
+
 - name: Fail if exhausted
   fail:
     msg: "No available hostname"
