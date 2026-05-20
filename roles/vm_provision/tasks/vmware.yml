@@ -9,7 +9,7 @@
     datacenter: 'LAB Datacenter'
     cluster: 'LAB Cluster'
 
-    folder: "{{ hostname }}"   # ✅ ADD THIS LINE
+    folder: LABVMW_DATASTORE/"{{ hostname }}"   # ✅ ADD THIS LINE
 
     name: "{{ hostname }}"
     template: win-template
