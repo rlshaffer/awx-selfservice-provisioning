@@ -1,0 +1,22 @@
+---
+- name: Create VM
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_user }}"
+    password: "{{ vcenter_pass }}"
+    validate_certs: no
+
+    datacenter: DC1
+    cluster: Cluster1
+
+    name: "{{ hostname }}"
+    template: win-template
+
+    hardware:
+      num_cpus: "{{ cpu }}"
+      memory_mb: "{{ memory * 1024 }}"
+
+    disk:
+      - size_gb: "{{ disk_size }}"
+
+    state: poweredon

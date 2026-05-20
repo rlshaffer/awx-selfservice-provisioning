@@ -1,0 +1,8 @@
+---
+- name: Self-Service Provisioning
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - naming_authority
+    - vm_provision

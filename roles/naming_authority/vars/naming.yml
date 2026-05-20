@@ -1,0 +1,16 @@
+env_map:
+  Production: "P"
+  Development: "D"
+
+env_ranges:
+  P:
+    start: 1
+    end: 49
+  D:
+    start: 50
+    end: 99
+
+site_map:
+  "Philadelphia": "PHL"
+  "New York": "NYC"
+  "Dallas": "DAL"

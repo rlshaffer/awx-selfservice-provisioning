@@ -1,0 +1,56 @@
+---
+- name: Set number range
+  set_fact:
+    start_num: "{{ env_ranges[env_code].start }}"
+    end_num: "{{ env_ranges[env_code].end }}"
+
+- name: Initialize search
+  set_fact:
+    current_num: "{{ start_num }}"
+    hostname_found: false
+
+- name: Find available hostname
+  until: hostname_found
+  retries: 100
+  delay: 0
+
+  block:
+
+    - name: Format number
+      set_fact:
+        formatted_number: "{{ '%02d' | format(current_num) }}"
+
+    - name: Build hostname
+      set_fact:
+        candidate_hostname: "{{ site_code }}-{{ server_role }}-{{ env_code }}{{ formatted_number }}"
+
+    - name: Check AD
+      community.windows.win_domain_computer:
+        name: "{{ candidate_hostname }}"
+        state: query
+      register: ad_computer
+      ignore_errors: yes
+
+    - name: Exists?
+      set_fact:
+        exists_in_ad: "{{ ad_computer.found | default(false) }}"
+
+    - name: Use if free
+      set_fact:
+        hostname: "{{ candidate_hostname }}"
+        hostname_found: true
+      when: not exists_in_ad
+
+    - name: Increment
+      set_fact:
+        current_num: "{{ current_num + 1 }}"
+      when: exists_in_ad
+
+- name: Fail if exhausted
+  fail:
+    msg: "No available hostname"
+  when: current_num > end_num
+
+- name: Debug output
+  debug:
+    msg: "Final hostname: {{ hostname }}"

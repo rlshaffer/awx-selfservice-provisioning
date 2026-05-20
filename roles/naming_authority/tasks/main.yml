@@ -1,0 +1,10 @@
+---
+- name: Set environment code
+  set_fact:
+    env_code: "{{ env_map[environment] }}"
+
+- name: Get site from AD
+  include_tasks: get_site.yml
+
+- name: Generate hostname
+  include_tasks: generate_hostname.yml

@@ -1,0 +1,14 @@
+---
+- name: Query AD user
+  community.windows.win_domain_user:
+    name: "{{ requestor }}"
+    state: query
+  register: ad_user
+
+- name: Extract location
+  set_fact:
+    user_site: "{{ ad_user.user.location | default('UNKNOWN') }}"
+
+- name: Map site code
+  set_fact:
+    site_code: "{{ site_map[user_site] | default('GEN') }}"
