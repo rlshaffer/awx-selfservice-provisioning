@@ -1,23 +1,26 @@
-
 ---
-- name: Debug environment input
+- name: Normalize environ (handle list vs string)
+  set_fact:
+    environment: "{{ (environ | first) if environ is iterable and environ is not string else environ }}"
+
+- name: Debug environment
   debug:
-    msg: "Environment value is: {{ environment | default('NOT SET') }}"
+    msg: "Raw environ={{ environ }} | Normalized={{ environment }}"
 
-- name: Fail if environment is missing
+- name: Fail if missing
   fail:
-    msg: "Environment variable is missing or not passed from AWX"
-  when: environment is not defined
+    msg: "environ variable is missing from AWX"
+  when: environment is not defined or environment == ""
 
-- name: Fail if environment is invalid
+- name: Validate environment value
   fail:
-    msg: "Invalid environment value: {{ environment }}"
+    msg: "Invalid environ value: {{ environment }}"
   when: environment not in env_map
 
 - name: Set environment code
   set_fact:
     env_code: "{{ env_map[environment] }}"
 
-- name: Set fallback hostname (temporary)
+- name: Set hostname (temporary test)
   set_fact:
     hostname: "TEST-{{ env_code }}-01"
