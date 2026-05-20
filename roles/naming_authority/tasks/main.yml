@@ -1,12 +1,23 @@
 
+---
+- name: Debug environment input
+  debug:
+    msg: "Environment value is: {{ environment | default('NOT SET') }}"
+
+- name: Fail if environment is missing
+  fail:
+    msg: "Environment variable is missing or not passed from AWX"
+  when: environment is not defined
+
+- name: Fail if environment is invalid
+  fail:
+    msg: "Invalid environment value: {{ environment }}"
+  when: environment not in env_map
+
 - name: Set environment code
   set_fact:
     env_code: "{{ env_map[environment] }}"
 
-- name: Set simple hostname (TEMP FIX)
+- name: Set fallback hostname (temporary)
   set_fact:
     hostname: "TEST-{{ env_code }}-01"
-
-- name: Debug hostname
-  debug:
-    var: hostname
