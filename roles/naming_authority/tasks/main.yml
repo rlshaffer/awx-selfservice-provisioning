@@ -1,26 +1,32 @@
 ---
-- name: Normalize environ (handle list vs string)
+- name: Normalize environ (handle list or string)
   set_fact:
-    environment: "{{ (environ | first) if environ is iterable and environ is not string else environ }}"
+    env_value: >-
+      {% if environ is iterable and environ is not string %}
+      {{ environ[0] }}
+      {% else %}
+      {{ environ }}
+      {% endif %}
 
 - name: Debug environment
   debug:
-    msg: "Raw environ={{ environ }} | Normalized={{ environment }}"
+    msg: "Raw={{ environ }} | Normalized={{ env_value }}"
 
 - name: Fail if missing
   fail:
-    msg: "environ variable is missing from AWX"
-  when: environment is not defined or environment == ""
+    msg: "environ variable is missing"
+  when: env_value is not defined or env_value == ""
 
+# ✅ IMPORTANT: Use env_value (NOT environment)
 - name: Validate environment value
   fail:
-    msg: "Invalid environ value: {{ environment }}"
-  when: environment not in env_map
+    msg: "Invalid environ value: {{ env_value }}"
+  when: env_value not in env_map
 
 - name: Set environment code
   set_fact:
-    env_code: "{{ env_map[environment] }}"
+    env_code: "{{ env_map[env_value] }}"
 
-- name: Set hostname (temporary test)
+- name: Set hostname (temporary)
   set_fact:
     hostname: "TEST-{{ env_code }}-01"
