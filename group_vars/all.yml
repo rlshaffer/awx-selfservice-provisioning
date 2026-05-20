@@ -1,0 +1,4 @@
+
+vcenter_hostname: "your-vcenter.domain.local"
+vcenter_user: "administrator@vsphere.local"
+vcenter_pass: "YourPasswordHere"
