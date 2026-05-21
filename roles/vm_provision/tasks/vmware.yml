@@ -1,4 +1,12 @@
 ---
+
+- name: Debug input values
+  debug:
+    msg:
+      - "CPU: {{ cpu | default('MISSING') }}"
+      - "Memory: {{ memory | default('MISSING') }}"
+      - "Disk: {{ disk_size | default('MISSING') }}"
+
 - name: Create VM from ISO
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
