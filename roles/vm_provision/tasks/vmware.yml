@@ -1,26 +1,3 @@
----
-- name: Validate required inputs
-  fail:
-    msg: "cpu={{ cpu | default('MISSING') }}, memory={{ memory | default('MISSING') }}, disk_size={{ disk_size | default('MISSING') }}"
-  when:
-    - cpu is not defined or cpu | string == ""
-    - memory is not defined or memory | string == ""
-    - disk_size is not defined or disk_size | string == ""
-
-- name: Debug inputs
-  debug:
-    msg:
-      - "CPU={{ cpu }}"
-      - "Memory={{ memory }}"
-      - "Disk={{ disk_size }}"    
-
-- name: Debug input values
-  debug:
-    msg:
-      - "CPU: {{ cpu | default('MISSING') }}"
-      - "Memory: {{ memory | default('MISSING') }}"
-      - "Disk: {{ disk_size | default('MISSING') }}"
-
 - name: Create VM from ISO
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
@@ -29,25 +6,30 @@
     validate_certs: no
 
     datacenter: "LAB Datacenter"
+
+    # ✅ USE EITHER CLUSTER OR ESXI HOST (this is safer)
     cluster: "LAB Cluster"
-    resource_pool: "Resources"        # ✅ REQUIRED FIX
+    resource_pool: "Resources"
+
     folder: "/LAB Datacenter/vm"
-    datastore: "LABVMW_DATASTORE"
 
     name: "{{ hostname }}"
-    guest_id: windows9Server64Guest   # ✅ safer for compatibility
+    guest_id: windows9Server64Guest
 
     state: poweredon
 
     hardware:
-      num_cpus: "{{ cpu | int }}"                          # ✅ FIX
-      memory_mb: "{{ (memory | int) * 1024 }}"             # ✅ FIX
-      boot_firmware: bios
+      memory_mb: "{{ (memory | int) * 1024 }}"
+      num_cpus: "{{ cpu | int }}"
+      scsi: paravirtual
+      hotadd_cpu: false           # ✅ FIX
+      hotadd_memory: false        # ✅ FIX
 
     disk:
       - size_gb: "{{ disk_size | int }}"
         type: thin
-        datastore: "LABVMW_DATASTORE"                      # ✅ KEEP (safer with this module version)
+        datastore: "LABVMW_DATASTORE"
+        scsi_controller: 0        # ✅ FIX
 
     cdrom:
       - type: iso
@@ -55,4 +37,3 @@
 
     networks:
       - name: "LABServerPortGroup"
-        start_connected: true
