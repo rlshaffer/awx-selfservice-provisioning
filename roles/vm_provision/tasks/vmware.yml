@@ -22,14 +22,16 @@
       memory_mb: "{{ (memory | int) * 1024 }}"
       num_cpus: "{{ cpu | int }}"
       scsi: paravirtual
-      hotadd_cpu: false           # ✅ FIX
-      hotadd_memory: false        # ✅ FIX
+      hotadd_cpu: false
+      hotadd_memory: false
 
     disk:
       - size_gb: "{{ disk_size | int }}"
         type: thin
         datastore: "LABVMW_DATASTORE"
-        scsi_controller: 0        # ✅ FIX
+        controller_type: paravirtual     # ✅ FIX
+        controller_number: 0             # ✅ FIX
+        unit_number: 0                   # ✅ recommended
 
     cdrom:
       - type: iso
