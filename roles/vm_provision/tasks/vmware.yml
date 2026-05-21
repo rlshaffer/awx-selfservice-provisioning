@@ -35,7 +35,4 @@
         start_connected: true
         type: dhcp
 
-    boot:
-      boot_order:
-        - cdrom
-        - disk
+  
