@@ -1,26 +1,40 @@
 ---
-- name: Create VM
+- name: Create VM from ISO
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_user }}"
     password: "{{ vcenter_pass }}"
     validate_certs: no
 
-    datacenter: 'LAB Datacenter'
-    cluster: 'LAB Cluster'
-    
-
-    folder: "/LAB Datacenter/vm"   # ✅ ADD THIS LINE
+    datacenter: "LAB Datacenter"
+    cluster: "LAB Cluster"
+    folder: "/LAB Datacenter/vm"
     datastore: "LABVMW_DATASTORE"
-    
+
     name: "{{ hostname }}"
-    template: win-template
+    guest_id: windowsGuest   # ✅ choose appropriate OS
+
+    state: poweredon
 
     hardware:
       num_cpus: "{{ cpu }}"
       memory_mb: "{{ memory * 1024 }}"
+      boot_firmware: bios
 
     disk:
       - size_gb: "{{ disk_size }}"
+        type: thin
+    
+    cdrom:
+      type: iso
+      iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
 
-    state: poweredon
+    networks:
+      - name: "LABServerPortGroup"
+        start_connected: true
+        type: dhcp
+
+    boot:
+      boot_order:
+        - cdrom
+        - disk
