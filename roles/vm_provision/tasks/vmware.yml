@@ -13,7 +13,7 @@
       - "CPU={{ cpu }}"
       - "Memory={{ memory }}"
       - "Disk={{ disk_size }}"    
-      
+
 - name: Debug input values
   debug:
     msg:
@@ -34,7 +34,7 @@
     datastore: "LABVMW_DATASTORE"
 
     name: "{{ hostname }}"
-    guest_id: windowsGuest   # ✅ choose appropriate OS
+    guest_id: windows10Guest   # ✅ choose appropriate OS
 
     state: poweredon
 
@@ -43,11 +43,12 @@
       memory_mb: "{{ memory * 1024 }}"
       boot_firmware: bios
 
-    disk:
-      - size_gb: "{{ disk_size }}"
-        type: thin
-    
 
+    disk:
+     - size_gb: "{{ disk_size | int }}"
+       type: thin
+       datastore: "LABVMW_DATASTORE"
+  
     cdrom:
       - type: iso
         iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
@@ -55,6 +56,5 @@
     networks:
       - name: "LABServerPortGroup"
         start_connected: true
-        type: dhcp
-
+       
   
