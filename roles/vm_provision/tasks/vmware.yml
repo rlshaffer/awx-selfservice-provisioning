@@ -30,25 +30,25 @@
 
     datacenter: "LAB Datacenter"
     cluster: "LAB Cluster"
+    resource_pool: "Resources"        # ✅ REQUIRED FIX
     folder: "/LAB Datacenter/vm"
     datastore: "LABVMW_DATASTORE"
 
     name: "{{ hostname }}"
-    guest_id: windows10Guest   # ✅ choose appropriate OS
+    guest_id: windows9Server64Guest   # ✅ safer for compatibility
 
     state: poweredon
 
     hardware:
-      num_cpus: "{{ cpu }}"
-      memory_mb: "{{ memory * 1024 }}"
+      num_cpus: "{{ cpu | int }}"                          # ✅ FIX
+      memory_mb: "{{ (memory | int) * 1024 }}"             # ✅ FIX
       boot_firmware: bios
 
-
     disk:
-     - size_gb: "{{ disk_size | int }}"
-       type: thin
-       datastore: "LABVMW_DATASTORE"
-  
+      - size_gb: "{{ disk_size | int }}"
+        type: thin
+        datastore: "LABVMW_DATASTORE"                      # ✅ KEEP (safer with this module version)
+
     cdrom:
       - type: iso
         iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
@@ -56,5 +56,3 @@
     networks:
       - name: "LABServerPortGroup"
         start_connected: true
-       
-  
