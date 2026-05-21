@@ -1,5 +1,19 @@
 ---
+- name: Validate required inputs
+  fail:
+    msg: "cpu={{ cpu | default('MISSING') }}, memory={{ memory | default('MISSING') }}, disk_size={{ disk_size | default('MISSING') }}"
+  when:
+    - cpu is not defined or cpu | string == ""
+    - memory is not defined or memory | string == ""
+    - disk_size is not defined or disk_size | string == ""
 
+- name: Debug inputs
+  debug:
+    msg:
+      - "CPU={{ cpu }}"
+      - "Memory={{ memory }}"
+      - "Disk={{ disk_size }}"    
+      
 - name: Debug input values
   debug:
     msg:
