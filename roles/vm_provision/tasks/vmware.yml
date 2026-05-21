@@ -5,6 +5,14 @@
       cpu: "{{ cpu | default('UNDEFINED') }}"
       disk_size: "{{ disk_size | default('UNDEFINED') }}"
 
+- name: Dump ALL vars used in VM creation
+  debug:
+    msg:
+      hostname: "{{ hostname | default('UNDEFINED') }}"
+      memory: "{{ memory | default('UNDEFINED') }}"
+      cpu: "{{ cpu | default('UNDEFINED') }}"
+      disk_size: "{{ disk_size | default('UNDEFINED') }}"
+
 - name: Create VM from ISO
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
@@ -26,19 +34,19 @@
     state: poweredon
 
     hardware:
-      memory_mb: "{{ (memory | int) * 1024 }}"
-      num_cpus: "{{ cpu | int }}"
+      memory_mb: 4096
+      num_cpus: 2
       scsi: paravirtual
       hotadd_cpu: false
       hotadd_memory: false
 
     disk:
-      - size_gb: "{{ disk_size | int }}"
+      - size_gb: 60
         type: thin
         datastore: "LABVMW_DATASTORE"
-        controller_type: paravirtual     # ✅ FIX
-        controller_number: 0             # ✅ FIX
-        unit_number: 0                   # ✅ recommended
+        controller_type: paravirtual
+        controller_number: 0
+        unit_number: 0
 
     cdrom:
       - type: iso
