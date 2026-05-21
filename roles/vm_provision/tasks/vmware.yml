@@ -25,9 +25,10 @@
       - size_gb: "{{ disk_size }}"
         type: thin
     
+
     cdrom:
-      type: iso
-      iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
+      - type: iso
+        iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
 
     networks:
       - name: "LABServerPortGroup"
