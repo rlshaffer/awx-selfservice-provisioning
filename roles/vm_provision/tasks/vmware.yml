@@ -1,3 +1,10 @@
+- name: Debug input variables
+  debug:
+    msg:
+      memory: "{{ memory | default('UNDEFINED') }}"
+      cpu: "{{ cpu | default('UNDEFINED') }}"
+      disk_size: "{{ disk_size | default('UNDEFINED') }}"
+
 - name: Create VM from ISO
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
