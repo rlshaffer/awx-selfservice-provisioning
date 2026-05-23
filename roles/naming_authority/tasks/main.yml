@@ -4,9 +4,14 @@
     msg: "Invalid environ value: {{ environ }}"
   when: environ not in ['dev', 'qa', 'uat', 'prod']
 
-- name: Normalize environ (simple + reliable)
+- name: Normalize environ values
   set_fact:
-    env_value: "{{ ((environ | first) if environ is iterable and environ is not string else environ) | trim }}"
+    env_value: >-
+      {% if environ | lower in ['production','prod'] %}prod
+      {% elif environ | lower in ['development','dev'] %}dev
+      {% elif environ | lower == 'qa' %}qa
+      {% elif environ | lower == 'uat' %}uat
+      {% else %}invalid{% endif %}
 
 - name: Set environment code
   set_fact:
