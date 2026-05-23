@@ -1,0 +1,3 @@
+pyvmomi
+requests
+urllib3

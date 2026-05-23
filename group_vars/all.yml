@@ -1,4 +1,11 @@
+environ: dev
 
-vcenter_hostname: "your-vcenter.domain.local"
-vcenter_user: "administrator@vsphere.local"
-vcenter_pass: "YourPasswordHere"
+cpu: 1
+memory: 4
+disk_size: 160
+
+datacenter: LAB Datacenter
+cluster: LAB Cluster
+datastore: LABVMW_DATASTORE
+network_name: LABServerPortGroup
+folder: "/LAB Datacenter/vm"

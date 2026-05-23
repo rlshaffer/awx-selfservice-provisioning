@@ -1,56 +1,43 @@
-- name: Debug input variables
+- name: DEBUG full vm config
   debug:
     msg:
-      memory: "{{ memory | default('UNDEFINED') }}"
-      cpu: "{{ cpu | default('UNDEFINED') }}"
-      disk_size: "{{ disk_size | default('UNDEFINED') }}"
+      datacenter: "{{ datacenter | default('NOT SET') }}"
+      datastore: "{{ datastore | default('NOT SET') }}"
+      cluster: "{{ cluster | default('NOT SET') }}"
+      folder: "{{ folder | default('NOT SET') }}"
+      network: "{{ network_name | default('NOT SET') }}"
+      cpu: "{{ cpu | default('NOT SET') }}"
+      memory: "{{ memory | default('NOT SET') }}"
+      disk: "{{ disk_size | default('NOT SET') }}"
 
-- name: Dump ALL vars used in VM creation
-  debug:
-    msg:
-      hostname: "{{ hostname | default('UNDEFINED') }}"
-      memory: "{{ memory | default('UNDEFINED') }}"
-      cpu: "{{ cpu | default('UNDEFINED') }}"
-      disk_size: "{{ disk_size | default('UNDEFINED') }}"
-
-- name: Create VM from ISO
+- name: Create VM (minimal test)
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_hostname }}"
-    username: "{{ vcenter_user }}"
-    password: "{{ vcenter_pass }}"
+    hostname: "{{ lookup('env','VMWARE_HOST') }}"
+    username: "{{ lookup('env','VMWARE_USER') }}"
+    password: "{{ lookup('env','VMWARE_PASSWORD') }}"
     validate_certs: no
 
-    datacenter: "LAB Datacenter"
+    datacenter: "{{ datacenter }}"
+    datastore: "{{ datastore }}" 
+    cluster: "{{ cluster }}" 
+    folder: "{{ folder }}"
 
-    # ✅ USE EITHER CLUSTER OR ESXI HOST (this is safer)
-    cluster: "LAB Cluster"
-    resource_pool: "Resources"
-
-    folder: "/LAB Datacenter/vm"
-
+   
     name: "{{ hostname }}"
+    state: present
+
     guest_id: windows9Server64Guest
 
-    state: poweredon
+    disk:
+      - size_gb: "{{ disk_size | int }}"
+        datastore: "{{ datastore }}"
 
     hardware:
-      memory_mb: 4096
-      num_cpus: 2
-      scsi: paravirtual
-      hotadd_cpu: false
-      hotadd_memory: false
+      memory_mb: "{{ memory | int * 1024 }}"
+      num_cpus: "{{ cpu | int }}"
 
-    disk:
-      - size_gb: 60
-        type: thin
-        datastore: "LABVMW_DATASTORE"
-        controller_type: paravirtual
-        controller_number: 0
-        unit_number: 0
-
-    cdrom:
-      - type: iso
-        iso_path: "[Iso Data Store] vmware_iso/Windows10.iso"
 
     networks:
-      - name: "LABServerPortGroup"
+      - name: "{{ network_name }}"
+        device_type: vmxnet3
+        type: dhcp

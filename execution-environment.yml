@@ -1,0 +1,32 @@
+version: 3
+
+images:
+  base_image:
+    name: quay.io/ansible/awx-ee:latest
+
+# We force gcc and development tools to install natively at the very beginning
+additional_build_steps:
+  prepend_base:
+    - RUN dnf install -y gcc python3-devel libffi-devel openssl-devel libxml2-devel libxslt-devel
+
+dependencies:
+  system: bindep.txt
+  
+  ansible_core:
+    package_pip: ansible-core>=2.15
+  
+  ansible_runner:
+    package_pip: ansible-runner
+
+  galaxy:
+    collections:
+      - name: community.vmware
+        version: 3.7.0
+
+  python:
+    - pyvmomi
+    - requests
+    - urllib3
+
+options:
+  package_manager_path: /usr/bin/dnf

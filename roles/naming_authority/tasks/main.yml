@@ -1,7 +1,16 @@
 ---
+- name: Validate environment value
+  fail:
+    msg: "Invalid environ value: {{ environ }}"
+  when: environ not in ['dev', 'qa', 'uat', 'prod']
+
 - name: Normalize environ (simple + reliable)
   set_fact:
     env_value: "{{ ((environ | first) if environ is iterable and environ is not string else environ) | trim }}"
+
+- name: Set environment code
+  set_fact:
+    env_code: "{{ environ | lower }}"
 
 - name: Debug environment
   debug:
@@ -11,16 +20,6 @@
   fail:
     msg: "environ variable is missing"
   when: env_value is not defined or env_value == ""
-
-# ✅ IMPORTANT: Use env_value (NOT environment)
-- name: Validate environment value
-  fail:
-    msg: "Invalid environ value: {{ env_value }}"
-  when: env_value not in env_map
-
-- name: Set environment code
-  set_fact:
-    env_code: "{{ env_map[env_value] }}"
 
 - name: Set hostname (temporary)
   set_fact:
