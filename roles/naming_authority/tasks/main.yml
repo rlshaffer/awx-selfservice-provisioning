@@ -1,10 +1,5 @@
 ---
-- name: Validate environment value
-  fail:
-    msg: "Invalid environ value: {{ environ }}"
-  when: environ not in ['dev', 'qa', 'uat', 'prod']
-
-- name: Normalize environ values
+- name: Normalize environment input
   set_fact:
     env_value: >-
       {% if environ | lower in ['production','prod'] %}prod
@@ -12,6 +7,11 @@
       {% elif environ | lower == 'qa' %}qa
       {% elif environ | lower == 'uat' %}uat
       {% else %}invalid{% endif %}
+
+- name: Validate environment value
+  fail:
+    msg: "Invalid environ value: {{ environ }}"
+  when: env_value == 'invalid'
 
 - name: Set environment code
   set_fact:
