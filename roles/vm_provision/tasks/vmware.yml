@@ -1,3 +1,11 @@
+- name: Test DNS resolution
+  ansible.builtin.command: nslookup labvca50.nordsoncorp.local
+  register: dns_test
+  ignore_errors: yes
+
+- debug:
+    var: dns_test.stdout
+
 - name: DEBUG full vm config
   debug:
     msg:
