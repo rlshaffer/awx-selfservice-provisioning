@@ -1,0 +1,112 @@
+- name: Bootstrap AWX
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    controller_host: "http://172.25.234.185:30393"
+    controller_username: "randy.shaffer"
+    controller_password: "Dylan09142002"
+
+    github_username: "rlshaffer"
+    
+    repo_url: "https://github.com/rlshaffer/awx-selfservice-provisioning.git"
+
+    ssh_user: "randy"
+    ssh_private_key: "{{ lookup('file', '/home/randy/.ssh/id_rsa') }}"
+
+  tasks:
+
+
+     -name: Bootstrap AWX
+      hosts: localhost
+      gather_facts: false
+
+      vars_files:
+        - secrets.yml
+
+
+
+    - name: Create GitHub credential
+      awx.awx.credential:
+        name: GitHub
+        organization: Default
+        credential_type: Source Control
+        inputs:
+          username: "{{ github_username }}"
+          password: "{{ github_token }}"
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Create SSH credential
+      awx.awx.credential:
+        name: Lab SSH
+        organization: Default
+        credential_type: Machine
+        inputs:
+          username: "{{ ssh_user }}"
+          ssh_key_data: "{{ ssh_private_key }}"
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Create Project
+      awx.awx.project:
+        name: AWX Lab Project
+        organization: Default
+        scm_type: git
+        scm_url: "{{ repo_url }}"
+        credential: GitHub
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Sync project and wait for completion
+      awx.awx.project_update:
+        project: "{{ project_name }}"
+        wait: yes        
+
+    - name: Create Inventory
+      awx.awx.inventory:
+        name: Lab Inventory
+        organization: Default
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Add host
+      awx.awx.host:
+        name: lab-vm
+        inventory: Lab Inventory
+        variables:
+          ansible_host: 172.25.234.185
+          ansible_user: "{{ ssh_user }}"
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Create Job Template
+      awx.awx.job_template:
+        name: Run Lab Playbook
+        job_type: run
+        inventory: Lab Inventory
+        project: AWX Lab Project
+        playbook: provision_server.yml
+        credentials:
+          - Lab SSH
+        controller_host: "{{ controller_host }}"
+        controller_username: "{{ controller_username }}"
+        controller_password: "{{ controller_password }}"
+        validate_certs: false
+
+    - name: Launch project sync
+      awx.awx.project:
+        name: "{{ project_name }}"
+        organization: Default
+        scm_update_on_launch: true        
