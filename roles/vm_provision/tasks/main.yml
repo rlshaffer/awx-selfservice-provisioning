@@ -2,7 +2,12 @@
 - name: Set hostname
   set_fact:
     hostname: "labvca50"
-    
+
 - name: Provision VM
   include_tasks: vmware.yml
+  
+- name: Set canonical environ variable
+  set_fact:
+    env_key: "{{ environ | lower }}"
+
 

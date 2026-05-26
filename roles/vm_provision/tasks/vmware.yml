@@ -2,14 +2,17 @@
   set_fact:
     vm_name: "{{ hostname }}"
 
-
+- name: DEBUG env_key
+  debug:
+    var: env_key
+    
 - name: DEBUG env variables
   debug:
     msg:
-      - "environment={{ environment | default('UNDEFINED') }}"
+      - "environ={{ environ | default('UNDEFINED') }}"
       - "normalized_env={{ normalized_env | default('UNDEFINED') }}"
 
-- name: Apply environment config
+- name: Apply environ config
   set_fact:
     datacenter: "{{ environments[normalized_env].datacenter }}"
     cluster: "{{ environments[normalized_env].cluster }}"
@@ -19,3 +22,10 @@
     disk_size: "{{ environments[normalized_env].disk }}"
     memory: "{{ environments[normalized_env].memory }}"
     cpu: "{{ environments[normalized_env].cpu }}"
+
+- name: Validate environment key exists
+  fail:
+    msg: "Environ '{{ env_key }}' not found in environments config"
+  when:
+    - env_key is not defined
+    - environments[env_key] is not defined
