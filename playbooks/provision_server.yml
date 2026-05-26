@@ -1,10 +1,12 @@
-- name: TEST VERSION CHECK
-  debug:
-    msg: "THIS IS NEW CODE VERSION 3"
 
-- name: Self-Service Provisioning
+- name: TEST VERSION CHECK
   hosts: localhost
   gather_facts: false
+
+  tasks:
+    - name: Show proof message
+      debug:
+        msg: "NEW CODE IS RUNNING"
 
   roles:
     - naming_authority
