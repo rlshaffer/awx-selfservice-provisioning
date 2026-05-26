@@ -1,88 +1,14 @@
-
-- name: TEMP inject VMware config
+- name: Set vm_name from hostname
   set_fact:
-    datacenter: "lab-dc"
-    cluster: "lab-cluster"
-    datastore: "datastore1"
-    network: "VM Network"
-    memory: 4096
-    cpu: 2
-    disk: 40
-    folder: "/vm"
-    
-- name: PROOF vmware.yml is running
-  debug:
-    msg: "UPDATED vmware.yml is executing"
+    vm_name: "{{ hostname }}"
 
-- name: Load environment config
+- name: Apply environment config
   set_fact:
-    vm_config: "{{ environments[env_code] }}"
-
-
-- name: PROOF WHICH FILE IS RUNNING
-  debug:
-    msg: "UPDATED vmware.yml is executing"
-
-- name: Test DNS resolution
-  ansible.builtin.getent:
-    database: hosts
-    key: "{{ vm_name }}"
-  register: dns_test
-  ignore_errors: true
-
-
-- name: Show DNS test result
-  debug:
-    var: dns_test
-
-- name: Show execution source
-  debug:
-    msg: "Running updated vmware.yml"
-
-- name: DEBUG full vm config
-  debug:
-    msg:
-      datacenter: "{{ datacenter | default('NOT SET') }}"
-      datastore: "{{ datastore | default('NOT SET') }}"
-      cluster: "{{ cluster | default('NOT SET') }}"
-      folder: "{{ folder | default('NOT SET') }}"
-      network: "{{ network_name | default('NOT SET') }}"
-      cpu: "{{ cpu | default('NOT SET') }}"
-      memory: "{{ memory | default('NOT SET') }}"
-      disk: "{{ disk_size | default('NOT SET') }}"
-
-- name: Create VM (minimal test)
-  community.vmware.vmware_guest:
-    hostname: "{{ lookup('env','VMWARE_HOST') }}"
-    username: "{{ lookup('env','VMWARE_USER') }}"
-    password: "{{ lookup('env','VMWARE_PASSWORD') }}"
-    validate_certs: no
-
-    datacenter: "{{ vm_config.datacenter }}"
-    cluster: "{{ vm_config.cluster }}"
-    datastore: "{{ vm_config.datastore }}"
-    network: "{{ vm_config.network }}"
-    folder: "{{ vm_config.folder }}"
-
-    name: "{{ hostname }}"
-    state: present
-
-    guest_id: windows9Server64Guest
-
-    disk:
-      - size_gb: "{{ disk_size | int }}"
-        datastore: "{{ datastore }}"
-
-    hardware:
-      memory_mb: "{{ memory | int * 1024 }}"
-      num_cpus: "{{ cpu | int }}"
-
-    networks:
-      - name: "{{ network_name }}"
-        device_type: vmxnet3
-        type: dhcp
-
-- name: Debug vm_config
-  debug:
-    var: vm_config
-
+    datacenter: "{{ environments[environment].datacenter }}"
+    cluster: "{{ environments[environment].cluster }}"
+    datastore: "{{ environments[environment].datastore }}"
+    network: "{{ environments[environment].network }}"
+    folder: "{{ environments[environment].folder }}"
+    disk_size: "{{ environments[environment].disk }}"
+    memory: "{{ environments[environment].memory }}"
+    cpu: "{{ environments[environment].cpu }}"

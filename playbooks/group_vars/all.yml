@@ -1,34 +1,5 @@
 # group_vars/all.yml
 environments:
-  #dev:
-   # datacenter: "LAB Datacenter"
-   # cluster: "LAB Cluster"
-   # datastore: "LABVMW_DATASTORE"
-   # network: "LABServerPortGroup"
-   # folder: "/LAB Datacenter/vm"
-
-  #test:
-   # datacenter: lab-dc
-   # cluster: lab-cluster
-    #datastore: datastore2
-    #network: "VM Network"
-    #folder: "/vm/test"
-
-- name: Set vm_name from hostname
-  set_fact:
-    vm_name: "{{ hostname }}"
-
-- name: Apply environment config
-  set_fact:
-    datacenter: "{{ environments[environment].datacenter }}"
-    cluster: "{{ environments[environment].cluster }}"
-    datastore: "{{ environments[environment].datastore }}"
-    network: "{{ environments[environment].network }}"
-    folder: "{{ environments[environment].folder }}"
-    disk_size: "{{ environments[environment].disk }}"
-    memory: "{{ environments[environment].memory }}"
-    cpu: "{{ environments[environment].cpu }}"
-
   dev:
     datacenter: "LAB Datacenter"
     cluster: "LAB Cluster"
