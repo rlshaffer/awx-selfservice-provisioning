@@ -1,0 +1,2 @@
+# roles/naming_authority/defaults/main.yml
+environ: ""
