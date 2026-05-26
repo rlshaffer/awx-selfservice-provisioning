@@ -1,6 +1,19 @@
 # group_vars/all.yml
-
 environments:
+  dev:
+    datacenter: "LAB Datacenter"
+    cluster: "LAB Cluster"
+    datastore: "LABVMW_DATASTORE"
+    network: "LABServerPortGroup"
+    folder: "/LAB Datacenter/vm"
+
+  test:
+    datacenter: lab-dc
+    cluster: lab-cluster
+    datastore: datastore2
+    network: "VM Network"
+    folder: "/vm/test"
+
   dev:
     datacenter: "LAB Datacenter"
     cluster: "LAB Cluster"
