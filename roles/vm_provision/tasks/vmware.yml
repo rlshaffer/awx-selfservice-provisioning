@@ -2,13 +2,20 @@
   set_fact:
     vm_name: "{{ hostname }}"
 
+
+- name: DEBUG env variables
+  debug:
+    msg:
+      - "environment={{ environment | default('UNDEFINED') }}"
+      - "normalized_env={{ normalized_env | default('UNDEFINED') }}"
+
 - name: Apply environment config
   set_fact:
-    datacenter: "{{ environments[environment].datacenter }}"
-    cluster: "{{ environments[environment].cluster }}"
-    datastore: "{{ environments[environment].datastore }}"
-    network: "{{ environments[environment].network }}"
-    folder: "{{ environments[environment].folder }}"
-    disk_size: "{{ environments[environment].disk }}"
-    memory: "{{ environments[environment].memory }}"
-    cpu: "{{ environments[environment].cpu }}"
+    datacenter: "{{ environments[normalized_env].datacenter }}"
+    cluster: "{{ environments[normalized_env].cluster }}"
+    datastore: "{{ environments[normalized_env].datastore }}"
+    network: "{{ environments[normalized_env].network }}"
+    folder: "{{ environments[normalized_env].folder }}"
+    disk_size: "{{ environments[normalized_env].disk }}"
+    memory: "{{ environments[normalized_env].memory }}"
+    cpu: "{{ environments[normalized_env].cpu }}"
