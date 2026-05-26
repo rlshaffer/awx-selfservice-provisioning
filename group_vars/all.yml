@@ -1,11 +1,24 @@
-environ: dev
+vm_config.datacenter: LAB Datacenter
+vm_config.cluster: LAB Cluster
+vm_config.datastore: LABVMW_DATASTORE
+vm_config.network_name: LABServerPortGroup
+vm_config.folder: "/LAB Datacenter/vm"  
 
-cpu: 1
-memory: 4
-disk_size: 160
+environments:
+  development:
+    datacenter: dc1
+    cluster: lab-cluster
+    datastore: datastore1
+    network: vlan-dev
+    cpu: 2
+    memory: 4096
+    disk: 160
 
-datacenter: LAB Datacenter
-cluster: LAB Cluster
-datastore: LABVMW_DATASTORE
-network_name: LABServerPortGroup
-folder: "/LAB Datacenter/vm"
+  production:
+    datacenter: dc-prod
+    cluster: prod-cluster
+    datastore: prod-ds
+    network: vlan-prod
+    cpu: 2
+    memory: 8192
+    disk: 160

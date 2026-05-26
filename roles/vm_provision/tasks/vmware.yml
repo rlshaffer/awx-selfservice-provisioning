@@ -1,7 +1,7 @@
 - name: Test DNS resolution
-  ansible.builtin.command: nslookup labvca50.nordsoncorp.local
+  command: getent hosts {{ hostname }}
   register: dns_test
-  ignore_errors: yes
+  ignore_errors: y
 
 - debug:
     var: dns_test.stdout
