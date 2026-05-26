@@ -5,23 +5,21 @@
 - name: DEBUG env_key
   debug:
     var: env_key
-    
-- name: DEBUG env variables
-  debug:
-    msg:
-      - "environ={{ environ | default('UNDEFINED') }}"
-      - "normalized_env={{ normalized_env | default('UNDEFINED') }}"
+
+- name: Normalize environment key
+  set_fact:
+    env_key: "{{ environ | lower }}"
 
 - name: Apply environ config
   set_fact:
-    datacenter: "{{ environments[normalized_env].datacenter }}"
-    cluster: "{{ environments[normalized_env].cluster }}"
-    datastore: "{{ environments[normalized_env].datastore }}"
-    network: "{{ environments[normalized_env].network }}"
-    folder: "{{ environments[normalized_env].folder }}"
-    disk_size: "{{ environments[normalized_env].disk }}"
-    memory: "{{ environments[normalized_env].memory }}"
-    cpu: "{{ environments[normalized_env].cpu }}"
+    datacenter: "{{ environments[env_key].datacenter }}"
+    cluster: "{{ environments[env_key.cluster }}"
+    datastore: "{{ environments[env_key].datastore }}"
+    network: "{{ environments[env_key].network }}"
+    folder: "{{ environments[env_key].folder }}"
+    disk_size: "{{ environments[env_key].disk }}"
+    memory: "{{ environments[env_key].memory }}"
+    cpu: "{{ environments[env_key].cpu }}"
 
 - name: Validate environment key exists
   fail:
