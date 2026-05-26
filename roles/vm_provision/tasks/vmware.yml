@@ -1,4 +1,15 @@
 
+- name: TEMP inject VMware config
+  set_fact:
+    datacenter: "lab-dc"
+    cluster: "lab-cluster"
+    datastore: "datastore1"
+    network: "VM Network"
+    memory: 4096
+    cpu: 2
+    disk: 40
+    folder: "/vm"
+    
 - name: PROOF vmware.yml is running
   debug:
     msg: "UPDATED vmware.yml is executing"
@@ -73,5 +84,5 @@
 
 - name: Debug vm_config
   debug:
-  var: vm_config
+    var: vm_config
 
