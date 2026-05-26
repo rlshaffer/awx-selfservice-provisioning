@@ -1,13 +1,8 @@
 
-- name: TEST VERSION CHECK
-  hosts: localhost
+- hosts: localhost
   gather_facts: false
-
-  tasks:
-    - name: Show proof message
-      debug:
-        msg: "NEW CODE IS RUNNING"
 
   roles:
     - naming_authority
     - vm_provision
+
