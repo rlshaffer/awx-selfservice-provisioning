@@ -2,9 +2,9 @@
   set_fact:
     vm_name: "{{ hostname }}"
 
-- name: DEBUG env_key
-  debug:
-    var: env_key
+- name: Normalize environment key   ✅ MUST COME BEFORE DEBUG
+  set_fact:
+    env_key: "{{ environ | lower }}"
 
 - name: Normalize environment key
   set_fact:
@@ -13,7 +13,7 @@
 - name: Apply environ config
   set_fact:
     datacenter: "{{ environments[env_key].datacenter }}"
-    cluster: "{{ environments[env_key.cluster }}"
+    cluster: "{{ environments[env_key].cluster }}"
     datastore: "{{ environments[env_key].datastore }}"
     network: "{{ environments[env_key].network }}"
     folder: "{{ environments[env_key].folder }}"
@@ -21,9 +21,14 @@
     memory: "{{ environments[env_key].memory }}"
     cpu: "{{ environments[env_key].cpu }}"
 
+
 - name: Validate environment key exists
   fail:
     msg: "Environ '{{ env_key }}' not found in environments config"
   when:
     - env_key is not defined
     - environments[env_key] is not defined
+
+- name: DEBUG env_key
+  debug:
+    var: env_key
