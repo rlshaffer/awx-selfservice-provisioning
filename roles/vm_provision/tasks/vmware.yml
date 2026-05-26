@@ -2,13 +2,18 @@
   set_fact:
     vm_config: "{{ environments[env_code] }}"
 
-- name: Test DNS resolution
-  command: getent hosts {{ hostname }}
-  register: dns_test
-  ignore_errors: y
 
-- debug:
-    var: dns_test.stdout
+- name: Test DNS resolution
+  ansible.builtin.getent:
+    database: hosts
+    key: "{{ vm_name }}"
+  register: dns_test
+  ignore_errors: true
+
+
+- name: Show DNS test result
+  debug:
+    var: dns_test
 
 - name: DEBUG full vm config
   debug:
