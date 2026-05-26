@@ -15,6 +15,10 @@
   debug:
     var: dns_test
 
+- name: Show execution source
+  debug:
+    msg: "Running updated vmware.yml"
+    
 - name: DEBUG full vm config
   debug:
     msg:
