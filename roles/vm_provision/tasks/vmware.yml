@@ -1,3 +1,8 @@
+
+- name: PROOF vmware.yml is running
+  debug:
+    msg: "UPDATED vmware.yml is executing"
+
 - name: Load environment config
   set_fact:
     vm_config: "{{ environments[env_code] }}"
@@ -66,8 +71,7 @@
         device_type: vmxnet3
         type: dhcp
 
-        - name: Debug vm_config
 - name: Debug vm_config
   debug:
-    var: vm_config
+  var: vm_config
 
