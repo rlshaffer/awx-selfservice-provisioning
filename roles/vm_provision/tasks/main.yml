@@ -1,3 +1,4 @@
 ---
+
 - name: Provision VM
   include_tasks: vmware.yml

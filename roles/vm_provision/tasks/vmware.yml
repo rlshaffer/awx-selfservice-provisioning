@@ -1,3 +1,7 @@
+- name: Load environment config
+  set_fact:
+    vm_config: "{{ environments[env_code] }}"
+
 - name: Test DNS resolution
   command: getent hosts {{ hostname }}
   register: dns_test
@@ -25,12 +29,12 @@
     password: "{{ lookup('env','VMWARE_PASSWORD') }}"
     validate_certs: no
 
-    datacenter: "{{ datacenter }}"
-    datastore: "{{ datastore }}" 
-    cluster: "{{ cluster }}" 
-    folder: "{{ folder }}"
+    datacenter: "{{ vm_config.datacenter }}"
+    cluster: "{{ vm_config.cluster }}"
+    datastore: "{{ vm_config.datastore }}"
+    network: "{{ vm_config.network }}"
+    folder: "{{ vm_config.folder }}"
 
-   
     name: "{{ hostname }}"
     state: present
 
@@ -44,8 +48,13 @@
       memory_mb: "{{ memory | int * 1024 }}"
       num_cpus: "{{ cpu | int }}"
 
-
     networks:
       - name: "{{ network_name }}"
         device_type: vmxnet3
         type: dhcp
+
+        - name: Debug vm_config
+- name: Debug vm_config
+  debug:
+    var: vm_config
+
