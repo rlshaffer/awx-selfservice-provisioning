@@ -3,6 +3,10 @@
     vm_config: "{{ environments[env_code] }}"
 
 
+- name: PROOF WHICH FILE IS RUNNING
+  debug:
+    msg: "UPDATED vmware.yml is executing"
+
 - name: Test DNS resolution
   ansible.builtin.getent:
     database: hosts
@@ -18,7 +22,7 @@
 - name: Show execution source
   debug:
     msg: "Running updated vmware.yml"
-    
+
 - name: DEBUG full vm config
   debug:
     msg:
