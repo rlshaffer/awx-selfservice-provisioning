@@ -1,3 +1,7 @@
+- name: TEST VERSION CHECK
+  debug:
+    msg: "THIS IS NEW CODE VERSION 3"
+
 - name: Self-Service Provisioning
   hosts: localhost
   gather_facts: false
