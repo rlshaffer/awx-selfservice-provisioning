@@ -20,3 +20,4 @@ environments:
     memory: 8192
     disk: 160
 
+  vcenter_hostname: "your-vcenter.domain.com"
