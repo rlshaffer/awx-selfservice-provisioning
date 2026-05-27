@@ -8,6 +8,7 @@
 
 - name: Apply environ config
   set_fact:
+    vcenter_hostname: "{{ environments[env_key].vcenter_hostname }}"
     datacenter: "{{ environments[env_key].datacenter }}"
     cluster: "{{ environments[env_key].cluster }}"
     datastore: "{{ environments[env_key].datastore }}"
@@ -16,7 +17,7 @@
     disk_size: "{{ environments[env_key].disk }}"
     memory: "{{ environments[env_key].memory }}"
     cpu: "{{ environments[env_key].cpu }}"
-
+    
 - name: DEBUG final VM config
   debug:
     msg:
