@@ -20,6 +20,3 @@ environments:
     memory: 8192
     disk: 160
 
-    vcenter_hostname: "labvca50.nordsoncorp.local"
-    vcenter_username: "admin.shaffer@nordsoncorp.local"
-    vcenter_password: "{{ vault_vcenter_password }}"
