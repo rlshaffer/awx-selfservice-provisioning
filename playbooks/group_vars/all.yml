@@ -18,7 +18,4 @@ environments:
     folder: "/vm/prod"
     cpu: 2
     memory: 8192
-    disk: 160
-
-  dev:
-    vcenter_hostname: "your-vcenter.domain.com"
+    disk: 200
