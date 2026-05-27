@@ -6,6 +6,10 @@
   set_fact:
     env_key: "{{ environ | lower }}"
 
+- name: DEBUG environments structure
+  debug:
+    var: environments   
+
 - name: Apply environ config
   set_fact:
     vcenter_hostname: "{{ environments[env_key].vcenter_hostname }}"
