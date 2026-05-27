@@ -1,9 +1,9 @@
 # group_vars/all.yml
-environments:
+vcenter_hostname: "labvca50.nordsoncorp.local"
+vcenter_username: "admin.shaffer@nordsoncorp.local"
+vcenter_password: "Johnathan0730-!"
 
-  vcenter_hostname: "labvca50.nordsoncorp.local"
-  vcenter_username: "admin.shaffer@nordsoncorp.local"
-  vcenter_password: "Johnathan0730-!"
+environments:
 
   dev:
     datacenter: "LAB Datacenter"
