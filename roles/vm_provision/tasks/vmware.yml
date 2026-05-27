@@ -1,6 +1,6 @@
 - name: Set vm_name from hostname
   set_fact:
-    vm_name: "{{ hostname }}"
+    vm_name: "TestAWXVM" #"{{ hostname }}"
 
 - name: Normalize env_key key   ✅ MUST COME BEFORE DEBUG
   set_fact:
