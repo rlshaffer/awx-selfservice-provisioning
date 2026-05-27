@@ -49,6 +49,8 @@
     datastore: "{{ datastore }}"
     folder: "{{ folder }}"
 
+    guest_id: windows9Server64Guest
+
     hardware:
       memory_mb: "{{ memory }}"
       num_cpus: "{{ cpu }}"
