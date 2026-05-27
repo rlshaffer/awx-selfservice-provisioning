@@ -1,7 +1,7 @@
 ---
 - name: Set hostname
   set_fact:
-    hostname: "labvca50"
+    hostname: "labvca50.nordsoncorp.local"
 
 - name: Provision VM
   include_tasks: vmware.yml
