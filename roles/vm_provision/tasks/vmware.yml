@@ -37,6 +37,7 @@
       datacenter: "{{ datacenter }}"
       cluster: "{{ cluster }}"
       datastore: "{{ datastore }}"
+      name: "{{ vm_name }}"
       folder: "{{ folder }}"
       network: "{{ network }}"
       disk_size: "{{ disk_size }}"
@@ -57,4 +58,7 @@
 #    folder: "{{ folder }}"
 #    networks:
 #      - name: "{{ network }}"
+#      disk_size: "{{ disk_size }}"
+#      memory: "{{ memory }}"
+#      cpu: "{{ cpu }}"
 #    state: poweredon
