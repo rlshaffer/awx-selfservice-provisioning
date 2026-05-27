@@ -6,6 +6,13 @@
   set_fact:
     env_key: "{{ environ | lower }}"
 
+- name: Show VMware collection version
+  shell: ansible-galaxy collection list | grep vmware
+  register: vmware_collections
+
+- debug:
+    var: vmware_collections.stdout
+
 - name: DEBUG environments structure
   debug:
     var: environments   
