@@ -39,7 +39,7 @@
       datastore: "{{ datastore }}"
       folder: "{{ folder }}"
       network: "{{ network }}"
-      disk_size: "{{ disk_size }}"\
+      disk_size: "{{ disk_size }}"
       memory: "{{ memory }}"
       cpu: "{{ cpu }}"
 
