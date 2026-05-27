@@ -29,15 +29,32 @@
   debug:
     var: env_key
 
-- name: Create VM (minimal test)
-  vmware_guest:
-    hostname: "{{ vcenter_hostname }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    validate_certs: no
-    name: "{{ vm_name }}"
-    datacenter: "{{ datacenter }}"
-    cluster: "{{ cluster }}"
-    datastore: "{{ datastore }}"
-    folder: "{{ folder }}"
-    state: poweredon
+
+- name: DEBUG final VM config
+  debug:
+    msg:
+      name: "{{ vm_name }}"
+      datacenter: "{{ datacenter }}"
+      cluster: "{{ cluster }}"
+      datastore: "{{ datastore }}"
+      folder: "{{ folder }}"
+      network: "{{ network }}"
+      disk_size: "{{ disk_size }}"\
+      memory: "{{ memory }}"
+      cpu: "{{ cpu }}"
+
+
+#- name: Create VM (minimal test)
+#  vmware_guest:
+#    hostname: "{{ vcenter_hostname }}"
+#    username: "{{ vcenter_username }}"
+#    password: "{{ vcenter_password }}"
+#    validate_certs: no
+#    name: "{{ vm_name }}"
+#    datacenter: "{{ datacenter }}"
+#    cluster: "{{ cluster }}"
+#    datastore: "{{ datastore }}"
+#    folder: "{{ folder }}"
+#    networks:
+#      - name: "{{ network }}"
+#    state: poweredon
