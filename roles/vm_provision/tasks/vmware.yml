@@ -35,24 +35,34 @@
       memory: "{{ memory }}"
       cpu: "{{ cpu }}"
 
-
 - name: Create VM (minimal test)
   vmware_guest:
     hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
-    validate_certs: no
+    validate_certs: false
+
     name: "{{ vm_name }}"
+    #template: "win-template"
     datacenter: "{{ datacenter }}"
     cluster: "{{ cluster }}"
     datastore: "{{ datastore }}"
     folder: "{{ folder }}"
+
+    hardware:
+      memory_mb: "{{ memory }}"
+      num_cpus: "{{ cpu }}"
+
+    disk:
+      - size_gb: "{{ disk_size }}"
+        type: thin
+        datastore: "{{ datastore }}"
+
     networks:
-    - name: "{{ network }}"
-    disk_size: "{{ disk_size }}"
-    memory: "{{ memory }}"
-    cpu: "{{ cpu }}"
+      - name: "{{ network }}"
+
     state: poweredon
+
 
 
     
