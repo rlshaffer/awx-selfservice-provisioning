@@ -33,7 +33,7 @@
 - name: DEBUG final VM config
   debug:
     msg:
-      name: "{{ vm_name }}"
+      hostname: "{{ vm_name }}"
       datacenter: "{{ datacenter }}"
       cluster: "{{ cluster }}"
       datastore: "{{ datastore }}"
