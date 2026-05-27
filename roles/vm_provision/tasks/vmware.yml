@@ -17,23 +17,10 @@
     memory: "{{ environments[env_key].memory }}"
     cpu: "{{ environments[env_key].cpu }}"
 
-
-- name: Validate environment key exists
-  fail:
-    msg: "Environ '{{ env_key }}' not found in environments config"
-  when:
-    - env_key is not defined
-    - environments[env_key] is not defined
-
-- name: DEBUG env_key
-  debug:
-    var: env_key
-
-
 - name: DEBUG final VM config
   debug:
     msg:
-      hostname: "{{ vm_name }}"
+      hostname: "{{ vcenter_hostname }}"
       datacenter: "{{ datacenter }}"
       cluster: "{{ cluster }}"
       datastore: "{{ datastore }}"
@@ -45,20 +32,23 @@
       cpu: "{{ cpu }}"
 
 
-#- name: Create VM (minimal test)
-#  vmware_guest:
-#    hostname: "{{ vcenter_hostname }}"
-#    username: "{{ vcenter_username }}"
-#    password: "{{ vcenter_password }}"
-#    validate_certs: no
-#    name: "{{ vm_name }}"
-#    datacenter: "{{ datacenter }}"
-#    cluster: "{{ cluster }}"
-#    datastore: "{{ datastore }}"
-#    folder: "{{ folder }}"
-#    networks:
-#      - name: "{{ network }}"
-#      disk_size: "{{ disk_size }}"
-#      memory: "{{ memory }}"
-#      cpu: "{{ cpu }}"
-#    state: poweredon
+- name: Create VM (minimal test)
+  vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    name: "{{ vm_name }}"
+    datacenter: "{{ datacenter }}"
+    cluster: "{{ cluster }}"
+    datastore: "{{ datastore }}"
+    folder: "{{ folder }}"
+    networks:
+    - name: "{{ network }}"
+    disk_size: "{{ disk_size }}"
+    memory: "{{ memory }}"
+    cpu: "{{ cpu }}"
+    state: poweredon
+
+
+    
